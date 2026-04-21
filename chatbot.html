@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chatbot</title>
+    </head>
+    <body>
+        <div class="js-container"></div>
+
+        <script src="react-basics.js"></script>
+        <!-- React is an external library -->
+        <script src="https://unpkg.com/supersimpledev/react.js"></script>
+        <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+        <!-- Babel is JavaScript Compiler. JSX to JS -->
+        <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+        <script type="text/babel">
+            // Component name must start with an uppercase (follow Pascal Case)
+            function ChatInput() {
+                return (
+                    <> 
+                        <input 
+                            placeholder="Send a message to Chatbot" 
+                            size="30">
+                        </input>
+                        <button>Send</button>
+                    </>
+                );
+            }
+
+            // every component can have one parameter called props (object) and it contains all the attributes that we give to our component
+
+            function ChatMessage({ message, sender }) {
+                // const message = props.message;
+                // const sender = props.sender;
+                // const {message, sender} = props; <-- destructuring 
+
+                /*
+                if (sender === 'robot') {
+                    return (
+                        // <div> is a block element so it will always take up an entire line by itself
+                        <div>
+                            <img src="robot.png" width="50"/>
+                            {message}  
+                        </div>
+                    );
+                }
+                */
+                return ( 
+                     // <div> is a block element so it will always take up an entire line by itself
+                     // && is Guard Operator 
+                    <div>
+                        {sender === 'robot' && <img src="robot.png" width="50"/>}
+                        {message}
+                        {sender === 'user' && <img src="user.png" width="50"/>}
+                    </div>
+                );
+            }
+
+            function ChatMessages() {
+                const chatMessages = [{
+                    message: 'hello Chatbot',
+                    sender: 'user',
+                    id: 'id1'
+                }, {
+                    message: 'Hello! How can I help you?',
+                    sender: 'robot',
+                    id: 'id2'
+                }, {
+                    message: "can you get me today's date?",
+                    sender: 'user',
+                    id: 'id3'
+                }, {
+                    message: 'Today is April 19',
+                    sender: 'robot',
+                    id: 'id4'
+                }];
+
+                function sendMessage() {
+                    chatMessages.push({
+                    message: 'test',
+                    sender: 'user',
+                    id: crypto.randomUUID()
+                    });
+
+                    console.log(chatMessages);
+                }
+
+                return (
+                    <>
+                    <button onClick={sendMessage}>Send message</button>
+                    {chatMessages.map((chatMessage) => {
+                        return (
+                        <ChatMessage 
+                            message = {chatMessage.message}
+                            sender = {chatMessage.sender}
+                            key = {chatMessage.id}
+                        />
+
+                        );
+
+                    })}
+                    </>
+                );
+                
+                // State = data that is connected to the HTML. When we update this data, it will update the HTML.
+                }
+
+                function App() {
+                return (
+                    <>
+                    <ChatInput />
+                    <ChatMessages />
+                    </>
+                );
+                }
+        
+            const container = document.querySelector('.js-container');
+            // This sets up React. .render displays sth inside the container
+            ReactDOM.createRoot(container).render(<App/>);
+        </script>
+
+    </body>
+</html>
